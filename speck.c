@@ -62,7 +62,8 @@ speck_decrypt32(const uint32 xy, const int64 K)
 	uint16 x = (xy & 0xFFFF0000) >> 16, y = (xy & 0xFFFF);
 	for (i = 21; i >= 0; i--)
 	{
-		y = ROR16(x ^ y, 2);
+		y ^= x;
+		y = ROR16(y, 2);
 		x = (uint16) ((x ^ k[i]) - y);
 		x = ROL16(x, 7);
 	}
@@ -117,7 +118,8 @@ speck_decrypt48(const int64 xy, const int64 *K)
 	uint32 x = (xy & 0xFFFFFF000000) >> 24, y = (xy & 0xFFFFFF);
 	for (i = 22; i >= 0; i--)
 	{
-		y = ROR24(x ^ y, 3);
+		y ^= x;
+		y = ROR24(y, 3);
 		x = (((x ^ k[i]) - y) & 0xFFFFFF);
 		x = ROL24(x, 8);
 	}
