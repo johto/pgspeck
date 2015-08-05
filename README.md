@@ -1,3 +1,6 @@
+pgspeck
+=======
+
 pgspeck is a PostgreSQL extension for symmetrical encryption using the
 [Speck](https://en.wikipedia.org/wiki/Speck_(cipher)) encryption algorithms.
 Only 32-bit and 48-bit block sizes, with 64-bit and 96-bit keys (respectively)
