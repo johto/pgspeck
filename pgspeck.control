@@ -1,0 +1,4 @@
+comment = 'pgspeck'
+default_version = '1.0'
+
+relocatable = true
