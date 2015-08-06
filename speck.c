@@ -17,8 +17,8 @@ static void speck_key_expand48(const int64 *K, uint32 *k);
 static void
 speck_key_expand32(const int64 K, uint16 *k)
 {
-	uint16 l[22];
 	int i;
+	uint16 l[24];
 
 	l[2] = (K & 0xFFFF000000000000) >> 48;
 	l[1] = (K & 0x0000FFFF00000000) >> 32;
@@ -74,7 +74,7 @@ static void
 speck_key_expand48(const int64 *K, uint32 *k)
 {
 	int i;
-	uint32 l[23];
+	uint32 l[25];
 
 	l[2] = (K[0] & 0xFFFFFF000000) >> 24;
 	l[1] = (K[0] & 0x000000FFFFFF) >> 0;
