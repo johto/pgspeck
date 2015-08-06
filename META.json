@@ -1,0 +1,55 @@
+{
+   "name": "pgspeck",
+   "abstract": "Low block size Speck encryption in PostgreSQL",
+   "description": "pgspeck is a PostgreSQL extension for symmetrical encryption using the Speck encryption algorithm. ",
+   "version": "1.0.0",
+   "maintainer": [
+      "Marko Tiikkaja <marko@joh.to>"
+   ],
+   "license": {
+      "PostgreSQL": "http://www.postgresql.org/about/licence"
+   },
+   "prereqs": {
+      "runtime": {
+         "requires": {
+            "PostgreSQL": "9.1.0"
+         },
+         "recommends": {
+            "PostgreSQL": "9.4.0"
+         }
+      }
+   },
+   "provides": {
+     "pgspeck": {
+       "file": "pgspeck--1.0.sql",
+       "version": "1.0.0",
+       "abstract": "Speck encryption for PostgreSQL"
+     }
+   },
+   "resources": {
+      "homepage": "https://github.com/johto/pgspeck",
+      "bugtracker": {
+         "web": "https://github.com/johto/pgspeck/issues"
+      },
+      "repository": {
+        "url":  "https://github.com/johto/pgspeck.git",
+        "web":  "https://github.com/johto/pgspeck",
+        "type": "git"
+      }
+   },
+   "generated_by": "Marko Tiikkaja",
+   "meta-spec": {
+      "version": "1.0.0",
+      "url": "http://pgxn.org/meta/spec.txt"
+   },
+   "tags": [
+      "feistel",
+      "cipher",
+	  "encryption",
+	  "speck",
+	  "nsa",
+      "obfuscate",
+      "obfuscation",
+      "random"
+   ]
+}
