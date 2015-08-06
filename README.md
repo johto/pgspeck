@@ -5,7 +5,7 @@ pgspeck is a PostgreSQL extension for symmetrical encryption using the
 [Speck](https://en.wikipedia.org/wiki/Speck_(cipher)) encryption algorithm.
 Only 32-bit and 48-bit block sizes, and 64-bit and 96-bit keys (respectively)
 are supported.  The primary use case is generating a random-looking sequence
-from an increasing sequence.
+from an increasing sequence.  Requires PostgreSQL version 9.1 or later.
 
 The extension adds four functions:
 
