@@ -10,8 +10,8 @@ from an increasing sequence.
 The extension adds four functions:
 
 ```SQL
--- Encrypts a 32-bit plaintext using a 64-bit key.  Only the lowest 32 bits
--- from the plaintext are used; the key's full 64-bit range is used.
+-- Encrypts a 32-bit plaintext using a 64-bit key.  Only the lowermost 32 bits
+-- of the plaintext are used.  For the key, the full 64-bit range is effective.
 CREATE FUNCTION pgspeck_encrypt32(plaintext int8, key int8)
 	RETURNS int8
 	AS 'pgspeck', 'pgspeck_encrypt32' LANGUAGE c STRICT;
@@ -21,8 +21,8 @@ CREATE FUNCTION pgspeck_decrypt32(ciphertext int8, key int8)
 	RETURNS int8
 	AS 'pgspeck', 'pgspeck_decrypt32' LANGUAGE c STRICT;
 
--- Encrypts a 48-bit plaintext using a 96-bit key.  Only the lowest 48 bits
--- from each argument are used.
+-- Encrypts a 48-bit plaintext using a 96-bit key.  Only the lowermost 48 bits
+-- of each argument are used.
 CREATE FUNCTION pgspeck_encrypt48(plaintext int8, key1 int8, key2 int8)
 	RETURNS int8
 	AS 'pgspeck', 'pgspeck_encrypt48' LANGUAGE c STRICT;
