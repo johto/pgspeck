@@ -39,7 +39,7 @@ speck_encrypt32(const uint32 xy, const int64 K)
 
 	k[0] = (K & 0xFFFF);
 	speck_key_expand32(K, k);
-	
+
 	uint16 x = (xy & 0xFFFF0000) >> 16, y = (xy & 0xFFFF);
 	for (i = 0; i < 22; i++)
 	{
@@ -58,7 +58,7 @@ speck_decrypt32(const uint32 xy, const int64 K)
 
 	k[0] = (K & 0xFFFF);
 	speck_key_expand32(K, k);
-	
+
 	uint16 x = (xy & 0xFFFF0000) >> 16, y = (xy & 0xFFFF);
 	for (i = 21; i >= 0; i--)
 	{
@@ -95,7 +95,7 @@ speck_encrypt48(const int64 xy, const int64 *K)
 
 	k[0] = (K[1] & 0xFFFFFF);
 	speck_key_expand48(K, k);
-	
+
 	uint32 x = (xy & 0xFFFFFF000000) >> 24, y = (xy & 0xFFFFFF);
 	for (i = 0; i < 23; i++)
 	{
@@ -114,7 +114,7 @@ speck_decrypt48(const int64 xy, const int64 *K)
 
 	k[0] = (K[1] & 0xFFFFFF);
 	speck_key_expand48(K, k);
-	
+
 	uint32 x = (xy & 0xFFFFFF000000) >> 24, y = (xy & 0xFFFFFF);
 	for (i = 22; i >= 0; i--)
 	{
