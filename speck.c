@@ -35,16 +35,29 @@ uint32
 speck_encrypt32(const uint32 xy, const int64 K)
 {
 	uint32 i;
-	uint16 k[22];
+	uint16 ki;
+	uint16 lr[3];
+	int lp;
 	uint16 x = (xy & 0xFFFF0000) >> 16, y = (xy & 0xFFFF);
 
-	k[0] = (K & 0xFFFF);
-	speck_key_expand32(K, k);
+	lp = 0;
+	lr[2] = (K & 0xFFFF000000000000) >> 48;
+	lr[1] = (K & 0x0000FFFF00000000) >> 32;
+	lr[0] = (K & 0x00000000FFFF0000) >> 16;
+	ki    = (K & 0x000000000000FFFF) >> 0;
 
-	for (i = 0; i < 22; i++)
+	x = (uint16) (ROR16(x, 7) + y);
+	x ^= ki;
+	y = ROL16(y, 2) ^ x;
+
+	for (i = 0; i < 22-1; i++)
 	{
+		lr[lp] = ((uint16_t) (ki + ROR16(lr[lp], 7))) ^ i;
+		ki = (ROL16(ki, 2) ^ lr[lp]);
+		lp = (lp + 1) % 3;
+
 		x = (uint16) (ROR16(x, 7) + y);
-		x ^= k[i];
+		x ^= ki;
 		y = ROL16(y, 2) ^ x;
 	}
 	return (x << 16) | y;
