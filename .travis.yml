@@ -31,4 +31,4 @@ env:
 script:
  - make
  - sudo make install
- - make installcheck || cat regression.diffs
+ - make installcheck || (cat regression.diffs && /bin/false)
