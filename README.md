@@ -34,3 +34,5 @@ CREATE FUNCTION pgspeck_decrypt48(ciphertext int8, key1 int8, key2 int8)
 	RETURNS int8
 	AS 'pgspeck', 'pgspeck_decrypt48' LANGUAGE c STRICT;
 ```
+
+This software is released under the MIT license.
