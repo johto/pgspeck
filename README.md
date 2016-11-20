@@ -12,16 +12,20 @@ from an increasing sequence.  Requires PostgreSQL version 9.1 or later.
 Example usage:
 
 ```SQL
-=# CREATE FUNCTION my_secret_key() RETURNS int8 IMMUTABLE AS $$ SELECT 1234567890987654321 $$ LANGUAGE sql;
-CREATE FUNCTION
-=# CREATE SEQUENCE userid_plaintext_seq;
-CREATE SEQUENCE
-=# CREATE TABLE users (
--#    userid bigint NOT NULL DEFAULT pgspeck_encrypt32(nextval('userid_plaintext_seq'), my_secret_key()),
--#    PRIMARY KEY (userid)
--# );
-NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "users_pkey" for table "users"
-CREATE TABLE
+CREATE FUNCTION my_secret_key()
+RETURNS int8 IMMUTABLE
+AS $$
+    SELECT 1234567890987654321
+$$ LANGUAGE sql;
+
+CREATE SEQUENCE userid_plaintext_seq;
+
+CREATE TABLE users (
+    userid bigint NOT NULL
+        DEFAULT pgspeck_encrypt32(nextval('userid_plaintext_seq'), my_secret_key()),
+    PRIMARY KEY (userid)
+);
+
 =# INSERT INTO users DEFAULT VALUES RETURNING *;
    userid
 ------------
