@@ -9,6 +9,35 @@ Only 32-bit and 48-bit block sizes, and 64-bit and 96-bit keys (respectively)
 are supported.  The primary use case is generating a random-looking sequence
 from an increasing sequence.  Requires PostgreSQL version 9.1 or later.
 
+Example usage:
+
+```SQL
+=# CREATE FUNCTION my_secret_key() RETURNS int8 IMMUTABLE AS $$ SELECT 1234567890987654321 $$ LANGUAGE sql;
+CREATE FUNCTION
+=# CREATE SEQUENCE userid_plaintext_seq;
+CREATE SEQUENCE
+=# CREATE TABLE users (
+-#    userid bigint NOT NULL DEFAULT pgspeck_encrypt32(nextval('userid_plaintext_seq'), my_secret_key()),
+-#    PRIMARY KEY (userid)
+-# );
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "users_pkey" for table "users"
+CREATE TABLE
+=# INSERT INTO users DEFAULT VALUES RETURNING *;
+   userid
+------------
+ 3497276207
+(1 row)
+
+INSERT 0 1
+=# INSERT INTO users DEFAULT VALUES RETURNING *;
+   userid
+------------
+ 1514490635
+(1 row)
+
+INSERT 0 1
+```
+
 The extension adds four functions:
 
 ```SQL
