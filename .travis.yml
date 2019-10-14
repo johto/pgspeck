@@ -1,15 +1,10 @@
 language: c
 
-arch:
-  - amd64
-  - arm64
-
 compiler:
   - clang
   - gcc
 
 before_install:
-  - sudo apt-get -y install postgresql
   - psql --version
   - sudo /etc/init.d/postgresql stop
   - sudo apt-get -y --purge remove postgresql libpq-dev libpq5 postgresql-client-common postgresql-common
