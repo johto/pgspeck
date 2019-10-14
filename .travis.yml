@@ -23,6 +23,8 @@ env:
     - PGUSER=postgres
 
   matrix:
+    - PGVERSION=11
+    - PGVERSION=10
     - PGVERSION=9.6
     - PGVERSION=9.5
     - PGVERSION=9.4
