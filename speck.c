@@ -9,13 +9,19 @@
 #define ROL24(val, n) (_CIRCULAR_SHIFT(val, n, 24, <<, >>) & 0xFFFFFF)
 #define ROR24(val, n) (_CIRCULAR_SHIFT(val, n, 24, >>, <<) & 0xFFFFFF)
 
+typedef struct {
+	int64 K;
+	uint16 k[22];
+} ExpandedKeyCacheEntry32;
 
-static void speck_key_expand32(const int64 K, uint16 *k);
+static void speck_key_expand32(const int64 K, ExpandedKeyCacheEntry32 *kce);
 static void speck_key_expand48(const int64 *K, uint32 *k);
 
 
+static ExpandedKeyCacheEntry32 keycache32;
+
 static void
-speck_key_expand32(const int64 K, uint16 *k)
+speck_key_expand32(const int64 K, ExpandedKeyCacheEntry32 *kce)
 {
 	const int rounds = 22;
 	int i;
@@ -25,11 +31,13 @@ speck_key_expand32(const int64 K, uint16 *k)
 	l[1] = (K & 0x0000FFFF00000000) >> 32;
 	l[0] = (K & 0x00000000FFFF0000) >> 16;
 
+	kce->k[0] = (K & 0xFFFF);
 	for (i = 0; i <= rounds - 2; ++i)
 	{
-		l[i+3] = ((uint16) (k[i] + ROR16(l[i], 7))) ^ i;
-		k[i+1] = (ROL16(k[i], 2) ^ l[i+3]);
+		l[i+3] = ((uint16) (kce->k[i] + ROR16(l[i], 7))) ^ i;
+		kce->k[i+1] = (ROL16(kce->k[i], 2) ^ l[i+3]);
 	}
+	kce->K = K;
 }
 
 uint32
@@ -37,16 +45,17 @@ speck_encrypt32(const uint32 xy, const int64 K)
 {
 	const int rounds = 22;
 	int i;
-	uint16 k[22];
 	uint16 x = (xy & 0xFFFF0000) >> 16, y = (xy & 0xFFFF);
+	ExpandedKeyCacheEntry32 *kce;
 
-	k[0] = (K & 0xFFFF);
-	speck_key_expand32(K, k);
+	kce = &keycache32;
+	if (keycache32.K != K)
+		speck_key_expand32(K, kce);
 
 	for (i = 0; i <= rounds - 1; i++)
 	{
 		x = (uint16) (ROR16(x, 7) + y);
-		x ^= k[i];
+		x ^= kce->k[i];
 		y = ROL16(y, 2) ^ x;
 	}
 	return (x << 16) | y;
@@ -57,17 +66,18 @@ speck_decrypt32(const uint32 xy, const int64 K)
 {
 	const int rounds = 22;
 	int i;
-	uint16 k[22];
 	uint16 x = (xy & 0xFFFF0000) >> 16, y = (xy & 0xFFFF);
+	ExpandedKeyCacheEntry32 *kce;
 
-	k[0] = (K & 0xFFFF);
-	speck_key_expand32(K, k);
+	kce = &keycache32;
+	if (keycache32.K != K)
+		speck_key_expand32(K, kce);
 
 	for (i = rounds - 1; i >= 0; i--)
 	{
 		y ^= x;
 		y = ROR16(y, 2);
-		x = (uint16) ((x ^ k[i]) - y);
+		x = (uint16) ((x ^ kce->k[i]) - y);
 		x = ROL16(x, 7);
 	}
 	return (x << 16) | y;
