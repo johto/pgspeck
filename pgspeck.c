@@ -42,6 +42,11 @@ pgspeck_encrypt48(PG_FUNCTION_ARGS)
 	int64 key2 = PG_GETARG_INT64(2);
 	const int64 keys[2] = { key1, key2 };
 
+	if ((key1 >> 48) != 0 || (key2 >> 48) != 0)
+		ereport(ERROR,
+				(errcode(ERRCODE_NUMERIC_VALUE_OUT_OF_RANGE),
+				 errmsg("only the lowermost 48 bits of key's components can be non-zero")));
+
 	PG_RETURN_INT64(speck_encrypt48(plaintext, keys));
 }
 
@@ -55,6 +60,11 @@ pgspeck_decrypt48(PG_FUNCTION_ARGS)
 	int64 key1 = PG_GETARG_INT64(1);
 	int64 key2 = PG_GETARG_INT64(2);
 	const int64 keys[2] = { key1, key2 };
+
+	if ((key1 >> 48) != 0 || (key2 >> 48) != 0)
+		ereport(ERROR,
+				(errcode(ERRCODE_NUMERIC_VALUE_OUT_OF_RANGE),
+				 errmsg("only the lowermost 48 bits of key's components can be non-zero")));
 
 	PG_RETURN_INT64(speck_decrypt48(ciphertext, keys));
 }

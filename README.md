@@ -57,7 +57,7 @@ CREATE FUNCTION pgspeck_decrypt32(ciphertext int8, key int8)
 	AS 'pgspeck', 'pgspeck_decrypt32' LANGUAGE c STRICT;
 
 -- Encrypts a 48-bit plaintext using a 96-bit key.  Only the lowermost 48 bits
--- of each argument are used.
+-- of key component can be non-zero.
 CREATE FUNCTION pgspeck_encrypt48(plaintext int8, key1 int8, key2 int8)
 	RETURNS int8
 	AS 'pgspeck', 'pgspeck_encrypt48' LANGUAGE c STRICT;

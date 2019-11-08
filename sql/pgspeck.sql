@@ -54,6 +54,16 @@ cross join (values
 	('737194116','3172890000'),
 	('158978350','2606012418'),
 	('922337203','6854775807'),
-	('281474976710655','281474976710655'),
-	('-281474976710656','-281474976710656')
+	('281474976710655','281474976710655')
 ) k(key1, key2);
+
+-- error conditions
+select pgspeck_encrypt48(0, -1, 0);
+select pgspeck_encrypt48(0, 0, -1);
+select pgspeck_encrypt48(0, 9223372036854775807, 0);
+select pgspeck_encrypt48(0, 0, 9223372036854775807);
+
+select pgspeck_decrypt48(0, -1, 0);
+select pgspeck_decrypt48(0, 0, -1);
+select pgspeck_decrypt48(0, 9223372036854775807, 0);
+select pgspeck_decrypt48(0, 0, 9223372036854775807);
