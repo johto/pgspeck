@@ -3,3 +3,4 @@
 /pgspeck.so
 *.swp
 /*.o
+/.deps
