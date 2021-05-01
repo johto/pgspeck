@@ -1,8 +1,6 @@
 pgspeck
 =======
 
-[![Build Status](https://travis-ci.org/johto/pgspeck.svg?branch=master)](https://travis-ci.org/johto/pgspeck)
-
 pgspeck is a PostgreSQL extension for symmetrical encryption using the
 [Speck](https://en.wikipedia.org/wiki/Speck_(cipher)) encryption algorithm.
 Only 32-bit and 48-bit block sizes, and 64-bit and 96-bit keys (respectively)
