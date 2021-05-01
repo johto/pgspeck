@@ -1,0 +1,19 @@
+on:
+  push:
+     branches:
+       - master
+jobs:
+  test:
+    strategy:
+      matrix:
+        pg: [14, 13, 12, 11, 10, 9.6, 9.5, 9.4, 9.3, 9.2, 9.1]
+    name: PostgreSQL ${{ matrix.pg }}
+    runs-on: ubuntu-latest
+    container: pgxn/pgxn-tools
+    steps:
+      - name: Start PostgreSQL ${{ matrix.pg }}
+        run: pg-start ${{ matrix.pg }}
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Test on PostgreSQL ${{ matrix.pg }}
+        run: pg-build-test
