@@ -15,6 +15,6 @@ jobs:
       - name: Start PostgreSQL ${{ matrix.pg }}
         run: pg-start ${{ matrix.pg }}
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       - name: Test on PostgreSQL ${{ matrix.pg }}
         run: pg-build-test
