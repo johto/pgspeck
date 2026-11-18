@@ -11,13 +11,27 @@ jobs:
     strategy:
       matrix:
         pg: [18, 17, 16, 15, 14, 13, 12, 11, 10, 9.6, 9.5, 9.4, 9.3, 9.2, 9.1]
+      fail-fast: false
     name: PostgreSQL ${{ matrix.pg }}
     runs-on: ubuntu-latest
-    container: pgxn/pgxn-tools
     steps:
       - name: Start PostgreSQL ${{ matrix.pg }}
-        run: pg-start ${{ matrix.pg }}
+        uses: pgxn/postgres-action@a708a4ddaf3592079fc59c7fd221c96f1536399e # v0.3.1
+        with:
+          version: ${{ matrix.pg }}
+
       - name: Check out repository code
         uses: actions/checkout@v6
+
+      - name: Build and install
+        run: |
+          make
+          sudo make install
+
       - name: Test on PostgreSQL ${{ matrix.pg }}
-        run: pg-build-test
+        run: make installcheck
+        id: test
+
+      - name: Show Diffs
+        if: failure() && steps.test.outcome == 'failure'
+        run: find . -name regression.diffs -exec cat {} +
